@@ -3,7 +3,7 @@ import pandas as pd
 # Import Nela Kaggle-News datasets and keep only columns regarding the title and source>
 nela = pd.read_csv("C:/Datasets/_all_features_NELA2017dataset.csv")
 
-# Import Nela 2018 and 2019 db into an dataframe using this sample code
+# Import Nela 2018 db into an dataframe using this sample code
 
 '''
 import pandas as pd
