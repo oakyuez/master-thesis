@@ -24,6 +24,13 @@ print(data.isna().sum())
 X = data["content"]
 y = data["Label"]
 
+label_enc = LabelEncoder()
+y_enc = label_enc.fit_transform(y)
+
+label_enc.inverse_transform([0, 1, 2, 3 , 4])
+label = [0, 1, 2, 3, 4]
+target_label = ["Center", "Lean Left", "Lean Right", "Left", "Right"]
+
 X_train, X_test, y_train, y_test = train_test_split(X, y_enc, test_size=0.25, random_state=42)
 
 tf_vec_unigram = TfidfVectorizer(stop_words="english", min_df=0.333, max_features=2500)
