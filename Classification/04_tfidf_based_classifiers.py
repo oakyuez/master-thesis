@@ -14,7 +14,7 @@ from sklearn.svm import LinearSVC
 
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
-data = pd.read_csv("/home/jupyter-ozkan_ma/data/nela_kaggle.csv")
+data = pd.read_csv("/home/jupyter-ozkan_ma/data/nela_kaggle_combined.csv")
 print("Number of NULL-Values:")
 print(data.isna().sum())
 data.dropna(inplace=True)
@@ -33,11 +33,6 @@ target_label = ["Center", "Lean Left", "Lean Right", "Left", "Right"]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y_enc, test_size=0.25, random_state=42)
 
-tf_vec_unigram = TfidfVectorizer(stop_words="english", min_df=0.333, max_features=2500)
-
-X_train_tf_unigram = tf_vec_unigram.fit_transform(X_train)
-X_test_tf_unigram = tf_vec_unigram.transform(X_test)
-
 dt = DecisionTreeClassifier(random_state=42)
 svc = LinearSVC()
 lr = LogisticRegression(multi_class="multinomial")
@@ -45,28 +40,38 @@ nb = BernoulliNB()
 
 classifier = [dt, svc, lr, nb]
 
-for clf in classifier:
+for i in range(1, 4):
     
-    print("Training of the classifier: {} \n".format(clf))
-    clf.fit(X_train_tf_unigram, y_train)
-    y_pred = clf.predict(X_test_tf_unigram)
+    print("Training of the classifiers with n-gram range from 1 to {}: \n".format(i))
     
-    print("\n")
+    tfidf_vec = TfidfVectorizer(stop_words="english", min_df=0.33, max_features=1000, ngram_range=(1, i))
     
-    print("Accuracy of the classifier:     ")
-    accuracy = accuracy_score(y_test, y_pred)
-    print(accuracy)
+    X_train_tfidf = tfidf_vec.fit_transform(X_train)
+    X_test_tfidf = tfidf_vec.transform(X_test)
     
-    print("\n")
+    for clf in classifier:
     
-    print("Confusion Matrix of the classifier: \n")
-    con_mat = confusion_matrix(y_test, y_pred, labels=label)
-    print(con_mat)
-    
-    print("\n")
-    
-    print("Classification Report of the classifier: \n")
-    report = classification_report(y_test, y_pred, target_names=target_label)
-    print(report)
-    
-    print("\n")
+        print("Training of the classifier: {} \n".format(clf))
+        clf.fit(X_train_tfidf, y_train)
+        y_pred = clf.predict(X_test_tfidf)
+
+        print("\n")
+
+        print("Accuracy of the classifier:     ")
+        accuracy = accuracy_score(y_test, y_pred)
+        print(accuracy)
+
+        print("\n")
+
+        print("Confusion Matrix of the classifier: \n")
+        con_mat = confusion_matrix(y_test, y_pred, labels=label)
+        print(con_mat)
+
+        print("\n")
+
+        print("Classification Report of the classifier: \n")
+        report = classification_report(y_test, y_pred, target_names=target_label)
+        print(report)
+
+        print("\n")
+        
