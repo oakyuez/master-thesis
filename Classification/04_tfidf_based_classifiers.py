@@ -17,9 +17,6 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 data = pd.read_csv("/home/jupyter-ozkan_ma/data/nela_kaggle_combined.csv")
 print("Number of NULL-Values:")
 print(data.isna().sum())
-data.dropna(inplace=True)
-print("Number of NULL-Values:")
-print(data.isna().sum())
 
 X = data["content"]
 y = data["Label"]
