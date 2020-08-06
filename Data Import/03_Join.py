@@ -23,10 +23,36 @@ nela = nela.loc[:, ["source", "content"]]
 # Vereinen beide Datemsätze zu einem Datensatz
 news = pd.concat([kaggle, nela])
 
-# Füge den Quellen ihr politisches hinzu
+# Füge den Quellen ihr politisches Label hinzu
 inner_join = pd.merge(news, labels, left_on="source", right_on="Quelle", how="inner")
 inner_join = inner_join.loc[:, ["source", "content", "Label"]]
 inner_join["source"].value_counts()
 
 # Speichere die Daten als csv ab
 inner_join.to_csv("C:/Datasets/nela_kaggle.csv")
+
+inner_join["source"].value_counts().to_csv("C:/Datasets/nela_kaggle_combined_machbarkeitsstudie.csv")
+
+# Machbarkeitsstudie bzw. statistische Auswertung des Inner Join
+print(inner_join.shape)
+print(inner_join["source"].value_counts())
+print(inner_join["source"].unique())
+print(len(inner_join["source"].unique()))
+print(inner_join.isna().sum())
+
+print(inner_join["Label"].value_counts())
+print(inner_join["Label"].unique()) 
+
+# Splitten des riesigen Dataframes in einzelne Dataframes, je eins für eine politische Klasse
+news_leanLeft = inner_join[inner_join["Label"]=="Lean Left"]
+news_Left = inner_join[inner_join["Label"]=="Left"]
+news_Center = inner_join[inner_join["Label"]=="Center"]
+news_leanRight = inner_join[inner_join["Label"]=="Lean Right"]
+news_Right = inner_join[inner_join["Label"]=="Right"]
+
+# Speichere die einzelnen DF in CSV's ab
+news_Left.to_csv("C:/Datasets/news_Left.csv")
+news_leanLeft.to_csv("C:/Datasets/news_leanLeft.csv")
+news_Center.to_csv("C:/Datasets/news_Center.csv")
+news_leanRight.to_csv("C:/Datasets/news_leanRight.csv")
+news_Right.to_csv("C:/Datasets/news_Right.csv")
