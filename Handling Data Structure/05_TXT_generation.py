@@ -8,7 +8,7 @@ news = pd.read_csv("/home/jupyter-ozkan_ma/data/CSV/news_preprocessed_with_addti
 
 # Function to split the dataframe in train and test set without separating into feature and target column like scikit-learn
 def split_df_in_train_test(df):
-    df = df.reset_index()
+    df = df.reset_index().drop(["index"], axis=1)
     split_point = int(np.round(df.shape[0]) * 0.8)
     df_train = df.loc[:split_point-1, "content"]
     df_test = df.loc[split_point:, "content"]
@@ -97,4 +97,3 @@ abSt03_test_directory = "/home/jupyter-ozkan_ma/data/TXT/Ablation_Study_03/test/
 
 news_df_to_txt(partisanNews, abSt03_train_directory, abSt03_test_directory, "Partisan")
 news_df_to_txt(nonPartisanNews, abSt03_train_directory, abSt03_test_directory, "NonPartisan")
-
