@@ -1,3 +1,4 @@
+import time
 import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -75,14 +76,19 @@ label = [0, 1, 2, 3, 4]
 target_label = ["Center", "Lean Left", "Lean Right", "Left", "Right"]
 
 ## Apply classifiers
-
 def run_classifier(clf, X_train, X_test, y_train, y_test, label, target_label):
     
-    print("Training of the classifier: {} \n".format(clf))
+    start = time.time()
     clf.fit(X_train, y_train)
+    end = time.time() - start
+    
+    print("Duration of training the model in sec: {} \n".format(end))
+    
+    start = time.time()
     y_pred = clf.predict(X_test)
-
-    print("\n")
+    end = time.time() - start
+    
+    print("Duration of applying the model to unseen data in sec: {} \n".format(end))
 
     print("Accuracy of the classifier:     ")
     accuracy = accuracy_score(y_test, y_pred)
